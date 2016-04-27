@@ -61,7 +61,7 @@ def harvest(args):
     for tweet in iterator:
         tweet_count -= 1
 
-        # INSERT PROCESSING HERE
+        # preprocessing tweets
         tweet = preprocess(tweet)
 
         # Save tweet into database
