@@ -32,6 +32,7 @@ KEYWORD = 'Melbourne'
 
 def parse_args():
     """ Read arguments from command line."""
+
     parser = ArgumentParser(
         description="Twitter harvesting application."
     )
@@ -51,6 +52,10 @@ def parse_args():
 
 
 def lemmatize(word):
+    """
+    Lemmatization
+    """
+
     return lemmatizer.lemmatize(word)
 
 
@@ -78,6 +83,10 @@ def maxmatch(sentence, dictionary):
 
 
 def build_swn_lexicon():
+    """
+    Construct positive and negative lexicons
+    """
+
     positive_words_swn = []
     negative_words_swn = []
 
@@ -113,8 +122,11 @@ def build_swn_lexicon():
     return [positive_words_swn, negative_words_swn]
 
 
-# Gets the polarity from SentiWordNet
 def get_polarity_type(synset_name):
+    """
+    Gets the polarity from SentiWordNet
+    """
+
     swn_synset = swn.senti_synset(synset_name)
     if not swn_synset:
         return None
@@ -128,11 +140,14 @@ def get_polarity_type(synset_name):
         return 0
 
 
-# For a given tweet, classify it as negative (-1), neutral (0) or
-# positive (1) using a given lexicon
-# The lexicon is given as a list of two sets, with the first set
-# containing positive words and the second set containing negative words
 def classify(tweet, lexicon):
+    """
+    For a given tweet, classify it as negative (-1), neutral (0) or
+    positive (1) using a given lexicon
+    The lexicon is given as a list of two sets, with the first set
+    containing positive words and the second set containing negative words
+    """
+
     score = 0
     for sentence in tweet:
         for word in sentence:
@@ -149,6 +164,11 @@ def classify(tweet, lexicon):
 
 
 def preprocess(tweet, lexicon):
+    """
+    Preprocessing will exclude tweeter name, URL and hashtags and add
+    hashtags back as tokenized sentence
+    """
+
     tweet_text = tweet["text"]
 
     # Use regex to remove twitter usernames
@@ -203,6 +223,7 @@ def harvest(args, lexicon):
     More tutorial can be found on the following link:
     http://socialmedia-class.org/twittertutorial.html
     """
+
     ACCESS_TOKEN = '724923138233012224-CtQQ4qB08Cx0ubb8wTi3Hlu5M9uoZMP'
     ACCESS_SECRET = '7nyzJpJNi3ojCW63tPM7h7n7qXwExeZqcar4ZO7YpID6P'
     CONSUMER_KEY = 'KYCiQNaYLBOlPRm0YIrALqgKG'
@@ -224,9 +245,7 @@ def harvest(args, lexicon):
         language="en"
     )
 
-    tweet_count = 1
     for tweet in iterator:
-        tweet_count -= 1
 
         # preprocessing
         tweet = tweet
@@ -234,9 +253,6 @@ def harvest(args, lexicon):
 
         # Save tweet into database
         db.save(tweet)
-
-        if tweet_count <= 0:
-            break
 
 
 def main():
