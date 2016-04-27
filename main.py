@@ -1,11 +1,12 @@
 import json
+import couchdb
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 
 # Variables that contains the user credentials to access Twitter API 
-ACCESS_TOKEN = '724923138233012224-CtQQ4qB08Cx0ubb8wTi3Hlu5M9uoZMP'
-ACCESS_SECRET = '7nyzJpJNi3ojCW63tPM7h7n7qXwExeZqcar4ZO7YpID6P'
-CONSUMER_KEY = 'KYCiQNaYLBOlPRm0YIrALqgKG'
-CONSUMER_SECRET = 'FXJKLs7Ft7DvcF0OAIbtScy5n5bn19tnyQpYswDkvvZkt1SUSm'
+ACCESS_TOKEN = '724926978873298946-GzUWebFMysrG5c9B0QLCKwUIS334Ff2'
+ACCESS_SECRET = 'TkQgu1VyUb9OsfYn8XJIEW3DSn9ROEqdjRdn39gCrUF39'
+CONSUMER_KEY = 'FiwgzSsEsYA9p5KjCnzr82Lhw'
+CONSUMER_SECRET = 'AQWlN7Zwpm4rYWIV2krL81jYBKH1Nj0LFc6hfkYAALfC691hCR'
 
 oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
 
@@ -32,3 +33,7 @@ for tweet in iterator:
        
     if tweet_count <= 0:
         break 
+
+
+couch = couchdb.Server('http://http://115.146.94.116:5984/')
+db = couch['tweets'] # existing
