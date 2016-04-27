@@ -133,6 +133,7 @@ def build_swn_lexicon():
             elif polarity == -1:
                 negative_words_swn.append(name)
 
+    # combine sentiwordnet lexicons with opinion lexicons
     positive_words_swn = positive_words_swn + opinion_positive_words
     negative_words_swn = negative_words_swn + opinion_negative_words
 
