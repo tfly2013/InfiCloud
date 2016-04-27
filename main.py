@@ -12,11 +12,13 @@ from argparse import ArgumentParser
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 from nltk.corpus import sentiwordnet as swn
 from nltk.corpus import wordnet as wn
+from nltk.corpus import opinion_lexicon
 
 # download all nltk relevant stuff
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('sentiwordnet')
+nltk.download('words')
 
 # tokenize each sentence into words
 word_punct_tokenizer = nltk.tokenize.regexp.WordPunctTokenizer()
@@ -29,6 +31,14 @@ words_list = set(nltk.corpus.words.words())
 
 # get the NLTK lemmatizer
 lemmatizer = nltk.stem.wordnet.WordNetLemmatizer()
+
+# manually-annotated positive set
+opinion_positive_words = opinion_lexicon.positive()
+opinion_positive_words = [word for word in opinion_positive_words]
+
+# manually-annotated negative set
+opinion_negative_words = opinion_lexicon.negative()
+opinion_negative_words = [word for word in opinion_negative_words]
 
 # DB name
 DB_NAME = 'demo'
@@ -122,6 +132,9 @@ def build_swn_lexicon():
                 positive_words_swn.append(name)
             elif polarity == -1:
                 negative_words_swn.append(name)
+
+    positive_words_swn = positive_words_swn + opinion_positive_words
+    negative_words_swn = negative_words_swn + opinion_negative_words
 
     positive_words_swn = set(positive_words_swn)
     negative_words_swn = set(negative_words_swn)
