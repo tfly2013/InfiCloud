@@ -19,6 +19,7 @@ nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('sentiwordnet')
 nltk.download('words')
+nltk.download('opinion_lexicon')
 
 # tokenize each sentence into words
 word_punct_tokenizer = nltk.tokenize.regexp.WordPunctTokenizer()
@@ -238,12 +239,14 @@ def preprocess(tweet, lexicon):
 
 def harvest(args, lexicon):
     """
-    Variables that contains the user credentials to access Twitter API
-    these following information are obtained through registering an app
-    on apps.twitter.com
-    More tutorial can be found on the following link:
-    http://socialmedia-class.org/twittertutorial.html
+    Havest tweets and store them to database
     """
+    
+    # Variables that contains the user credentials to access Twitter API
+    # these following information are obtained through registering an app
+    # on apps.twitter.com
+    # More tutorial can be found on the following link:
+    # http://socialmedia-class.org/twittertutorial.html
 
     ACCESS_TOKEN = '724923138233012224-CtQQ4qB08Cx0ubb8wTi3Hlu5M9uoZMP'
     ACCESS_SECRET = '7nyzJpJNi3ojCW63tPM7h7n7qXwExeZqcar4ZO7YpID6P'
@@ -263,6 +266,7 @@ def harvest(args, lexicon):
     # Get a sample of the public data following through Twitter
     iterator = twitter_stream.statuses.filter(
         track=args.keyword,
+        
         language="en"
     )
 
