@@ -15,13 +15,24 @@ punkt_sentence_segmenter = nltk.data.load('tokenizers/punkt/english.pickle')
 DB_NAME = 'demo'
 KEYWORD = 'Melbourne'
 
+
 def parse_args():
     """ Read arguments from command line."""
-    parser = ArgumentParser(description="Twitter harvesting application.")
-    parser.add_argument('--keyword', type=str, default=KEYWORD, help=\
-    'Keyword used to search for tweets.')
-    parser.add_argument('--dbname', type=str, default=DB_NAME, help=\
-    'Name of CouchDB database to insert data into.')
+    parser = ArgumentParser(
+        description="Twitter harvesting application."
+    )
+    parser.add_argument(
+        '--keyword',
+        type=str,
+        default=KEYWORD,
+        help='Keyword used to search for tweets.'
+    )
+    parser.add_argument(
+        '--dbname',
+        type=str,
+        default=DB_NAME,
+        help='Name of CouchDB database to insert data into.'
+    )
     return parser.parse_args()
 
 def build_swn_lexicon():
@@ -107,7 +118,7 @@ def preprocess(tweet, lexicon):
     for sentence in tweet:
         processed_tweet.append(word_punct_tokenizer.tokenize(sentence))
         
-    processed_tweet['sentiment'] = classify(processed_tweet, lexicon)
+    tweet['sentiment'] = classify(processed_tweet, lexicon)
         
     return processed_tweet
 
@@ -121,37 +132,42 @@ def harvest(args, lexicon):
     ACCESS_SECRET = '7nyzJpJNi3ojCW63tPM7h7n7qXwExeZqcar4ZO7YpID6P'
     CONSUMER_KEY = 'KYCiQNaYLBOlPRm0YIrALqgKG'
     CONSUMER_SECRET = 'FXJKLs7Ft7DvcF0OAIbtScy5n5bn19tnyQpYswDkvvZkt1SUSm'
-    
+
     # Set up couch db
     couch = couchdb.Server("http://115.146.94.116:5984/")
     db = couch[args.dbname]
-    
+
     # Twitter API authentication
     oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
-    
+
     # Initiate the connection to Twitter Streaming API
     twitter_stream = TwitterStream(auth=oauth)
-    
+
     # Get a sample of the public data following through Twitter
-    iterator = twitter_stream.statuses.filter(track=args.keyword, language="en")
+    iterator = twitter_stream.statuses.filter(
+        track=args.keyword,
+        language="en"
+    )
 
     tweet_count = 1
     for tweet in iterator:
         tweet_count -= 1
-    
+
         # INSERT PROCESSING HERE
         tweet = preprocess(tweet, lexicon)
     
         # Save tweet into database
         db.save(tweet)
-        
+
         if tweet_count <= 0:
             break
-    
+
+
 def main():
     args = parse_args()
     swn_lexicon = build_swn_lexicon()
     harvest(args, swn_lexicon)
-    
+
+
 if __name__ == '__main__':
     main()
