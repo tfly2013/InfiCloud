@@ -246,9 +246,7 @@ def harvest(args, lexicon):
     )
 
     for tweet in iterator:
-
         # preprocessing
-        tweet = tweet
         tweet = preprocess(tweet, lexicon)
 
         # Save tweet into database
