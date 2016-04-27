@@ -1,3 +1,10 @@
+"""
+Team: Cluster and Cloud Computing Team 3
+Contents: Assigment 2
+Authors: Kimple Ke, Roger Li, Fei Tang, Bofan Jin, David Ye
+"""
+
+
 import couchdb
 import nltk
 import re
