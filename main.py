@@ -35,6 +35,7 @@ def parse_args():
     )
     return parser.parse_args()
 
+
 def build_swn_lexicon():
     positive_words_swn = []
     negative_words_swn = []
@@ -50,7 +51,8 @@ def build_swn_lexicon():
 
     # Create lists of positive and negative words
     for name, polarity in polarities.items():
-        # For each lemma, take the most common polarity if there are more than 1
+        # For each lemma, take the most common polarity
+        # if there are more than 1
         if len(polarity) > 1:
             word_polarity = max(set(polarity), key=polarity.count)
             polarities[name] = [word_polarity]
@@ -63,27 +65,32 @@ def build_swn_lexicon():
                 positive_words_swn.append(name)
             elif polarity == -1:
                 negative_words_swn.append(name)
-    
+
     positive_words_swn = set(positive_words_swn)
     negative_words_swn = set(negative_words_swn)
 
     return [positive_words_swn, negative_words_swn]
 
-    # Gets the polarity from SentiWordNet
+
+# Gets the polarity from SentiWordNet
 def get_polarity_type(synset_name):
-    swn_synset =  swn.senti_synset(synset_name)
+    swn_synset = swn.senti_synset(synset_name)
     if not swn_synset:
         return None
-    elif swn_synset.pos_score() > swn_synset.neg_score() and swn_synset.pos_score() > swn_synset.obj_score():
+    elif swn_synset.pos_score() > swn_synset.neg_score() \
+            and swn_synset.pos_score() > swn_synset.obj_score():
         return 1
-    elif swn_synset.neg_score() > swn_synset.pos_score() and swn_synset.neg_score() > swn_synset.obj_score():
+    elif swn_synset.neg_score() > swn_synset.pos_score() \
+            and swn_synset.neg_score() > swn_synset.obj_score():
         return -1
     else:
         return 0
 
-# For a given tweet, classify it as negative (-1), neutral (0) or positive (1) using a given lexicon
-# The lexicon is given as a list of two sets, with the first set containing positive words and the second set
-# containing negative words
+
+# For a given tweet, classify it as negative (-1), neutral (0) or
+# positive (1) using a given lexicon
+# The lexicon is given as a list of two sets, with the first set
+# containing positive words and the second set containing negative words
 def classify(tweet, lexicon):
     score = 0
     for sentence in tweet:
@@ -99,35 +106,40 @@ def classify(tweet, lexicon):
     else:
         return 0
 
+
 def preprocess(tweet, lexicon):
     # Use regex to remove twitter usernames
     tweet = re.sub(r"@\w+", "", tweet)
-    
+
     # Use regex to remove URLs
     tweet = re.sub(r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+])+", "", tweet)
 
     # Remove hashtags from tweet
     tweet = re.sub(r"#\w+", "", tweet)
 
-    # Make everything lowercase, then segment with NLTK punkt sentence segmenter
+    # Make everything lowercase, then segment with NLTK punkt 
+    # sentence segmenter
     tweet = punkt_sentence_segmenter.tokenize(tweet.lower())
 
-    #Tokenize sentences with NLTK regex WordPunct tokenizer
+    # Tokenize sentences with NLTK regex WordPunct tokenizer
     processed_tweet = []
 
     for sentence in tweet:
         processed_tweet.append(word_punct_tokenizer.tokenize(sentence))
-        
+
     tweet['sentiment'] = classify(processed_tweet, lexicon)
-        
+
     return processed_tweet
 
+
 def harvest(args, lexicon):
-    # Variables that contains the user credentials to access Twitter API
-    # these following information are obtained through registering an app
-    # on apps.twitter.com
-    # More tutorial can be found on the following link:
-    # http://socialmedia-class.org/twittertutorial.html
+    """
+    Variables that contains the user credentials to access Twitter API
+    these following information are obtained through registering an app
+    on apps.twitter.com
+    More tutorial can be found on the following link:
+    http://socialmedia-class.org/twittertutorial.html
+    """
     ACCESS_TOKEN = '724923138233012224-CtQQ4qB08Cx0ubb8wTi3Hlu5M9uoZMP'
     ACCESS_SECRET = '7nyzJpJNi3ojCW63tPM7h7n7qXwExeZqcar4ZO7YpID6P'
     CONSUMER_KEY = 'KYCiQNaYLBOlPRm0YIrALqgKG'
@@ -155,7 +167,7 @@ def harvest(args, lexicon):
 
         # INSERT PROCESSING HERE
         tweet = preprocess(tweet, lexicon)
-    
+
         # Save tweet into database
         db.save(tweet)
 
