@@ -5,14 +5,28 @@ from argparse import ArgumentParser
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 from nltk.corpus import sentiwordnet as swn
 from nltk.corpus import wordnet as wn
-from nltk.tokenize import WordPunctTokenizer
 
+# download all nltk relevant stuff
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('sentiwordnet')
-word_punct_tokenizer = WordPunctTokenizer()
+
+# tokenize each sentence into words
+word_punct_tokenizer = nltk.tokenize.regexp.WordPunctTokenizer()
+
+# sentence segmenter
 punkt_sentence_segmenter = nltk.data.load('tokenizers/punkt/english.pickle')
+
+# English words list
+words_list = set(nltk.corpus.words.words())
+
+# get the NLTK lemmatizer
+lemmatizer = nltk.stem.wordnet.WordNetLemmatizer()
+
+# DB name
 DB_NAME = 'demo'
+
+# input for keyword in tweet API request parameters
 KEYWORD = 'Melbourne'
 
 
@@ -34,6 +48,33 @@ def parse_args():
         help='Name of CouchDB database to insert data into.'
     )
     return parser.parse_args()
+
+
+def lemmatize(word):
+    return lemmatizer.lemmatize(word)
+
+
+def maxmatch(sentence, dictionary):
+    """
+    MaxMatch algorithm
+    """
+
+    sent_len = len(sentence)
+    if sent_len == 0:
+        return []
+
+    for i in range(sent_len, 0, -1):
+        firstword = sentence[:i]
+        lemmatized_firstword = lemmatize(firstword)
+        remainder = sentence[i:]
+        if lemmatized_firstword in dictionary:
+            result = [firstword] + maxmatch(remainder, dictionary)
+            return result
+
+    firstword = sentence[0]
+    remainder = sentence[1:]
+    result = [firstword] + maxmatch(remainder, dictionary)
+    return result
 
 
 def build_swn_lexicon():
@@ -108,28 +149,50 @@ def classify(tweet, lexicon):
 
 
 def preprocess(tweet, lexicon):
+    tweet_text = tweet["text"]
+
     # Use regex to remove twitter usernames
-    tweet = re.sub(r"@\w+", "", tweet)
+    tweet_text = re.sub(
+        r"@\w+",
+        "",
+        tweet_text
+    )
 
     # Use regex to remove URLs
-    tweet = re.sub(r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+])+", "", tweet)
+    tweet_text = re.sub(
+        r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+])+",
+        "",
+        tweet_text
+    )
+
+    # find all hashtags in the tweet
+    hashtag_pattern = re.compile(r"#\w+")
+    hashtag_list = hashtag_pattern.findall(tweet_text)
 
     # Remove hashtags from tweet
-    tweet = re.sub(r"#\w+", "", tweet)
+    tweet_text = re.sub(r"#\w+", "", tweet_text)
 
-    # Make everything lowercase, then segment with NLTK punkt 
+    # Make everything lowercase, then segment with NLTK punkt
     # sentence segmenter
-    tweet = punkt_sentence_segmenter.tokenize(tweet.lower())
+    tweet_text = punkt_sentence_segmenter.tokenize(tweet_text.lower())
 
     # Tokenize sentences with NLTK regex WordPunct tokenizer
     processed_tweet = []
 
-    for sentence in tweet:
+    for sentence in tweet_text:
         processed_tweet.append(word_punct_tokenizer.tokenize(sentence))
+
+    for hashtag in hashtag_list:
+        sent_list = []
+        sentence = hashtag[1:]
+        toeknized_sent = maxmatch(sentence, words_list)
+        for t in toeknized_sent:
+            sent_list.append(t)
+        processed_tweet.append(sent_list)
 
     tweet['sentiment'] = classify(processed_tweet, lexicon)
 
-    return processed_tweet
+    return tweet
 
 
 def harvest(args, lexicon):
@@ -165,7 +228,8 @@ def harvest(args, lexicon):
     for tweet in iterator:
         tweet_count -= 1
 
-        # INSERT PROCESSING HERE
+        # preprocessing
+        tweet = tweet
         tweet = preprocess(tweet, lexicon)
 
         # Save tweet into database
