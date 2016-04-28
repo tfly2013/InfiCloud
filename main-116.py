@@ -42,10 +42,10 @@ opinion_negative_words = opinion_lexicon.negative()
 opinion_negative_words = [word for word in opinion_negative_words]
 
 # DB name
-DB_NAME = 'demo3'
+DB_NAME = 'Melbourne'
 
 # input for keyword in tweet API request parameters
-KEYWORD = 'Melbourne'
+# KEYWORD = 'Melbourne'
 
 
 def parse_args():
@@ -54,12 +54,12 @@ def parse_args():
     parser = ArgumentParser(
         description="Twitter harvesting application."
     )
-    parser.add_argument(
-        '--keyword',
-        type=str,
-        default=KEYWORD,
-        help='Keyword used to search for tweets.'
-    )
+    # parser.add_argument(
+    #     '--keyword',
+    #     type=str,
+    #     default=KEYWORD,
+    #     help='Keyword used to search for tweets.'
+    # )
     parser.add_argument(
         '--dbname',
         type=str,
@@ -258,6 +258,8 @@ def harvest(args, lexicon):
     couch = couchdb.Server("http://115.146.94.116:5984/")
     db = couch[args.dbname]
 
+    print("CouchDB database read.")
+
     # Twitter API authentication
     oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
 
@@ -270,7 +272,14 @@ def harvest(args, lexicon):
         language="en"
     )
 
+    print("Twitter API connected.")
+
+    count = 100
     for tweet in iterator:
+        count -= 1
+        if count == 0:
+            count = 100
+            print("100 Twitter havested.")
         # preprocessing
         tweet = preprocess(tweet, lexicon)
 

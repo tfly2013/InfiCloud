@@ -42,10 +42,10 @@ opinion_negative_words = opinion_lexicon.negative()
 opinion_negative_words = [word for word in opinion_negative_words]
 
 # DB name
-DB_NAME = 'demo'
+DB_NAME = 'Melbourne'
 
 # input for keyword in tweet API request parameters
-KEYWORD = 'Melbourne'
+# KEYWORD = 'Melbourne'
 
 
 def parse_args():
@@ -54,12 +54,12 @@ def parse_args():
     parser = ArgumentParser(
         description="Twitter harvesting application."
     )
-    parser.add_argument(
-        '--keyword',
-        type=str,
-        default=KEYWORD,
-        help='Keyword used to search for tweets.'
-    )
+    # parser.add_argument(
+    #     '--keyword',
+    #     type=str,
+    #     default=KEYWORD,
+    #     help='Keyword used to search for tweets.'
+    # )
     parser.add_argument(
         '--dbname',
         type=str,
@@ -248,14 +248,17 @@ def harvest(args, lexicon):
     # More tutorial can be found on the following link:
     # http://socialmedia-class.org/twittertutorial.html
 
-    ACCESS_TOKEN = '724923138233012224-CtQQ4qB08Cx0ubb8wTi3Hlu5M9uoZMP'
-    ACCESS_SECRET = '7nyzJpJNi3ojCW63tPM7h7n7qXwExeZqcar4ZO7YpID6P'
-    CONSUMER_KEY = 'KYCiQNaYLBOlPRm0YIrALqgKG'
-    CONSUMER_SECRET = 'FXJKLs7Ft7DvcF0OAIbtScy5n5bn19tnyQpYswDkvvZkt1SUSm'
+    # Kimple's token
+    ACCESS_TOKEN = '1879356786-obaH7zmTg2ws0Pi6mY6JbFMErMjqKxzbBGuH9ZY'
+    ACCESS_SECRET = 'pI6Wnj9CJDIscF5cVVoVe8tWJ396jITVHNOai4deWTW5l'
+    CONSUMER_KEY = 'ZsIYOPOghaoCIfj4BG76S5fGw'
+    CONSUMER_SECRET = 'lcffivvg1gSiMkvN0dmHXuce3fcBoWeyr8qmSmokxm3aSIF3dq'
 
     # Set up couch db
     couch = couchdb.Server("http://115.146.94.116:5984/")
     db = couch[args.dbname]
+
+    print("CouchDB database read.")
 
     # Twitter API authentication
     oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
@@ -265,12 +268,18 @@ def harvest(args, lexicon):
 
     # Get a sample of the public data following through Twitter
     iterator = twitter_stream.statuses.filter(
-        track=args.keyword,
-        
+        locations="144.593742,-38.433859,145.512529,-37.511274",        
         language="en"
     )
 
+    print("Twitter API connected.")
+
+    count = 100
     for tweet in iterator:
+        count -= 1
+        if count == 0:
+            count = 100
+            print("100 Twitter havested.")
         # preprocessing
         tweet = preprocess(tweet, lexicon)
 
