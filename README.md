@@ -17,6 +17,19 @@ sudo apt-get update
 sudo apt-get install couchdb couchdb-bin couchdb-common -f
 ```
 
+## How to disk partition & mount
+https://help.ubuntu.com/community/InstallingANewHardDrive#Partition_The_Disk
+```bash
+# partitioning
+sudo fdisk <path_to_disk> # In this case it's: sudo fdisk /dev/vdb
+# format partition
+sudo mkfs -t ext4 <path_to_partition> # In this case it's: sudo mkfs -t ext4 /dev/vdb1
+# create a path for the partition to be mounted to
+sudo mkdir /media/<dir_name> # In this case it's: sudo mkdir /media/nectar_couchdb
+# mount the partition to the path that's created above
+sudo mount <path_to_partition> <path_to_mount_dir> # In this case it's: sudo mount /dev/vdb1 /media/nectar_couchdb
+```
+
 # Libaries
 ## Required libraries
 ```bash
