@@ -1,6 +1,3 @@
-
-
-
 """
 Team: Cluster and Cloud Computing Team 3
 Contents: Assigment 2
@@ -12,9 +9,6 @@ import couchdb
 import nltk
 import re
 from argparse import ArgumentParser
-import json
-
-
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 from nltk.corpus import sentiwordnet as swn
 from nltk.corpus import wordnet as wn
@@ -253,12 +247,12 @@ def harvest(args, lexicon):
     # on apps.twitter.com
     # More tutorial can be found on the following link:
     # http://socialmedia-class.org/twittertutorial.html
-
-    # Bofan's Token
-    ACCESS_TOKEN = '724926978873298946-GzUWebFMysrG5c9B0QLCKwUIS334Ff2'
-    ACCESS_SECRET = 'TkQgu1VyUb9OsfYn8XJIEW3DSn9ROEqdjRdn39gCrUF39'
-    CONSUMER_KEY = 'FiwgzSsEsYA9p5KjCnzr82Lhw'
-    CONSUMER_SECRET = 'AQWlN7Zwpm4rYWIV2krL81jYBKH1Nj0LFc6hfkYAALfC691hCR'
+ 
+    # Roger's token
+    ACCESS_TOKEN = '2172130051-DFJB7TToHvJSMU6iYRs62zTxXHbZTNX9Y4Y5wx3'
+    ACCESS_SECRET = '1KEsYxYYhd79hVWf8GQslU4GMkpmZLsj03M8vVIpcG4fb'
+    CONSUMER_KEY = 'D8JQLo7N5v9jTr8C6tqgvRl7t'
+    CONSUMER_SECRET = 'UvvzGLHrGYeFGsL7AJ0QJl4p8WOkYeJE36aPwOTOZJwHvT54g2'
 
     # Set up couch db
     couch = couchdb.Server("http://115.146.94.116:5984/")
@@ -274,8 +268,7 @@ def harvest(args, lexicon):
 
     # Get a sample of the public data following through Twitter
     iterator = twitter_stream.statuses.filter(
-
-        locations="144.593742,-38.433859,145.512529,-37.511274",  
+        locations="144.593742,-38.433859,145.512529,-37.511274",        
         language="en"
     )
 
@@ -298,3 +291,7 @@ def main():
     args = parse_args()
     swn_lexicon = build_swn_lexicon()
     harvest(args, swn_lexicon)
+
+
+if __name__ == '__main__':
+    main()
