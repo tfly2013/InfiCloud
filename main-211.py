@@ -247,12 +247,12 @@ def harvest(args, lexicon):
     # on apps.twitter.com
     # More tutorial can be found on the following link:
     # http://socialmedia-class.org/twittertutorial.html
-
-    # Kimple's token
-    ACCESS_TOKEN = '1879356786-obaH7zmTg2ws0Pi6mY6JbFMErMjqKxzbBGuH9ZY'
-    ACCESS_SECRET = 'pI6Wnj9CJDIscF5cVVoVe8tWJ396jITVHNOai4deWTW5l'
-    CONSUMER_KEY = 'ZsIYOPOghaoCIfj4BG76S5fGw'
-    CONSUMER_SECRET = 'lcffivvg1gSiMkvN0dmHXuce3fcBoWeyr8qmSmokxm3aSIF3dq'
+ 
+    # Roger's token
+    ACCESS_TOKEN = '2172130051-DFJB7TToHvJSMU6iYRs62zTxXHbZTNX9Y4Y5wx3'
+    ACCESS_SECRET = '1KEsYxYYhd79hVWf8GQslU4GMkpmZLsj03M8vVIpcG4fb'
+    CONSUMER_KEY = 'D8JQLo7N5v9jTr8C6tqgvRl7t'
+    CONSUMER_SECRET = 'UvvzGLHrGYeFGsL7AJ0QJl4p8WOkYeJE36aPwOTOZJwHvT54g2'
 
     # Set up couch db
     couch = couchdb.Server("http://115.146.94.116:5984/")
