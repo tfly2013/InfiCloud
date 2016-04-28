@@ -241,7 +241,7 @@ def harvest(args, lexicon):
     """
     Havest tweets and store them to database
     """
-    
+
     # Variables that contains the user credentials to access Twitter API
     # these following information are obtained through registering an app
     # on apps.twitter.com
@@ -268,7 +268,7 @@ def harvest(args, lexicon):
 
     # Get a sample of the public data following through Twitter
     iterator = twitter_stream.statuses.filter(
-        locations="144.593742,-38.433859,145.512529,-37.511274",        
+        locations="144.593742,-38.433859,145.512529,-37.511274",
         language="en"
     )
 
