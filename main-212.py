@@ -42,7 +42,7 @@ opinion_negative_words = opinion_lexicon.negative()
 opinion_negative_words = [word for word in opinion_negative_words]
 
 # DB name
-DB_NAME = 'Melbourne'
+DB_NAME = 'perth'
 
 # input for keyword in tweet API request parameters
 # KEYWORD = 'Melbourne'
@@ -268,7 +268,8 @@ def harvest(args, lexicon):
 
     # Get a sample of the public data following through Twitter
     iterator = twitter_stream.statuses.filter(
-        locations="144.593742,-38.433859,145.512529,-37.511274",        
+        # Perth bounding box
+        locations="115.617614, -32.675715,116.239023, -31.624486",        
         language="en"
     )
 

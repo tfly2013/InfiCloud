@@ -42,7 +42,7 @@ opinion_negative_words = opinion_lexicon.negative()
 opinion_negative_words = [word for word in opinion_negative_words]
 
 # DB name
-DB_NAME = 'Melbourne'
+DB_NAME = 'melbourne'
 
 # input for keyword in tweet API request parameters
 # KEYWORD = 'Melbourne'

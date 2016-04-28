@@ -1,6 +1,3 @@
-
-
-
 """
 Team: Cluster and Cloud Computing Team 3
 Contents: Assigment 2
@@ -12,9 +9,6 @@ import couchdb
 import nltk
 import re
 from argparse import ArgumentParser
-import json
-
-
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 from nltk.corpus import sentiwordnet as swn
 from nltk.corpus import wordnet as wn
@@ -48,7 +42,7 @@ opinion_negative_words = opinion_lexicon.negative()
 opinion_negative_words = [word for word in opinion_negative_words]
 
 # DB name
-DB_NAME = 'Melbourne'
+DB_NAME = 'brisbane'
 
 # input for keyword in tweet API request parameters
 # KEYWORD = 'Melbourne'
@@ -274,8 +268,8 @@ def harvest(args, lexicon):
 
     # Get a sample of the public data following through Twitter
     iterator = twitter_stream.statuses.filter(
-
-        locations="144.593742,-38.433859,145.512529,-37.511274",  
+        # Brisbane bounding box
+        locations="152.668523, -27.767441,153.31787, -26.996845",        
         language="en"
     )
 
@@ -298,3 +292,7 @@ def main():
     args = parse_args()
     swn_lexicon = build_swn_lexicon()
     harvest(args, swn_lexicon)
+
+
+if __name__ == '__main__':
+    main()
