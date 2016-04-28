@@ -48,7 +48,7 @@ opinion_negative_words = opinion_lexicon.negative()
 opinion_negative_words = [word for word in opinion_negative_words]
 
 # DB name
-DB_NAME = 'demo'
+DB_NAME = 'Melbourne2'
 
 # input for keyword in tweet API request parameters
 KEYWORD = 'Melbourne'
@@ -254,10 +254,10 @@ def harvest(args, lexicon):
     # More tutorial can be found on the following link:
     # http://socialmedia-class.org/twittertutorial.html
 
-    ACCESS_TOKEN = '724923138233012224-CtQQ4qB08Cx0ubb8wTi3Hlu5M9uoZMP'
-    ACCESS_SECRET = '7nyzJpJNi3ojCW63tPM7h7n7qXwExeZqcar4ZO7YpID6P'
-    CONSUMER_KEY = 'KYCiQNaYLBOlPRm0YIrALqgKG'
-    CONSUMER_SECRET = 'FXJKLs7Ft7DvcF0OAIbtScy5n5bn19tnyQpYswDkvvZkt1SUSm'
+    ACCESS_TOKEN = '724926978873298946-GzUWebFMysrG5c9B0QLCKwUIS334Ff2'
+    ACCESS_SECRET = 'TkQgu1VyUb9OsfYn8XJIEW3DSn9ROEqdjRdn39gCrUF39'
+    CONSUMER_KEY = 'FiwgzSsEsYA9p5KjCnzr82Lhw'
+    CONSUMER_SECRET = 'AQWlN7Zwpm4rYWIV2krL81jYBKH1Nj0LFc6hfkYAALfC691hCR'
 
     # Set up couch db
     couch = couchdb.Server("http://115.146.94.116:5984/")
@@ -271,7 +271,7 @@ def harvest(args, lexicon):
 
     # Get a sample of the public data following through Twitter
     iterator = twitter_stream.statuses.filter(
-        track=args.keyword,
+        locations="144.593742,-38.433859,145.512529,-37.511274",  
         
         language="en"
     )
