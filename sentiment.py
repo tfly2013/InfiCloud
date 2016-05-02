@@ -31,6 +31,7 @@ opinion_positive_words = [word for word in opinion_positive_words]
 opinion_negative_words = opinion_lexicon.negative()
 opinion_negative_words = [word for word in opinion_negative_words]
 
+
 def lemmatize(word):
     """
     Lemmatization

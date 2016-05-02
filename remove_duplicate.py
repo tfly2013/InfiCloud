@@ -8,7 +8,7 @@ for doc_id in db:
         doc = db[doc_id]
         if doc["id"] in ids:
                 db.delete(doc)
-                count+=1
+                count += 1
         else:
                 ids.append(doc["id"])
 print(count)
