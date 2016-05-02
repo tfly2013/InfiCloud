@@ -80,21 +80,30 @@ def harvest(args, lexicon):
             inputDB.save(doc)
             if userID not in ids:
                 ids.add(userID)
-                result = t.statuses.user_timeline(user_id=userID, count=200)
-                for tweet in result:
-                    if tweet["place"] != None:
-                        if tweet["place"]["name"] == "Melbourne":
-                            tweet = sentiment.preprocess(tweet, lexicon)
-                            outputDB[0].save(tweet)
-                        elif tweet["place"]["name"] == "Sydney":
-                            tweet = sentiment.preprocess(tweet, lexicon)
-                            outputDB[1].save(tweet)
-                        elif tweet["place"]["name"] == "Brisbane":
-                            tweet = sentiment.preprocess(tweet, lexicon)
-                            outputDB[2].save(tweet)
-                        elif tweet["place"]["name"] == "Perth (WA)":
-                            tweet = sentiment.preprocess(tweet, lexicon)
-                            outputDB[3].save(tweet)
+                try:
+                    result = t.statuses.user_timeline(
+                        user_id=userID,
+                        count=200
+                    )
+
+                    for tweet in result:
+                        if tweet["place"] != None:
+                            if tweet["place"]["name"] == "Melbourne":
+                                tweet = sentiment.preprocess(tweet, lexicon)
+                                outputDB[0].save(tweet)
+                            elif tweet["place"]["name"] == "Sydney":
+                                tweet = sentiment.preprocess(tweet, lexicon)
+                                outputDB[1].save(tweet)
+                            elif tweet["place"]["name"] == "Brisbane":
+                                tweet = sentiment.preprocess(tweet, lexicon)
+                                outputDB[2].save(tweet)
+                            elif tweet["place"]["name"] == "Perth (WA)":
+                                tweet = sentiment.preprocess(tweet, lexicon)
+                                outputDB[3].save(tweet)
+                except TwitterHTTPError:
+                    print "Not authorized to access user timeline, \
+                        with user id ", userID
+
         else:
             ids.add(userID)
 
