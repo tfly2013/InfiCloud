@@ -1,15 +1,5 @@
-"""
-Team: Cluster and Cloud Computing Team 3
-Contents: Assigment 2
-Authors: Kimple Ke, Roger Li, Fei Tang, Bofan Jin, David Ye
-"""
-
-
-import couchdb
 import nltk
 import re
-from argparse import ArgumentParser
-from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 from nltk.corpus import sentiwordnet as swn
 from nltk.corpus import wordnet as wn
 from nltk.corpus import opinion_lexicon
@@ -40,34 +30,6 @@ opinion_positive_words = [word for word in opinion_positive_words]
 # manually-annotated negative set
 opinion_negative_words = opinion_lexicon.negative()
 opinion_negative_words = [word for word in opinion_negative_words]
-
-# DB name
-DB_NAME = 'sydney'
-
-# input for keyword in tweet API request parameters
-# KEYWORD = 'Melbourne'
-
-
-def parse_args():
-    """ Read arguments from command line."""
-
-    parser = ArgumentParser(
-        description="Twitter harvesting application."
-    )
-    # parser.add_argument(
-    #     '--keyword',
-    #     type=str,
-    #     default=KEYWORD,
-    #     help='Keyword used to search for tweets.'
-    # )
-    parser.add_argument(
-        '--dbname',
-        type=str,
-        default=DB_NAME,
-        help='Name of CouchDB database to insert data into.'
-    )
-    return parser.parse_args()
-
 
 def lemmatize(word):
     """
@@ -235,64 +197,3 @@ def preprocess(tweet, lexicon):
     tweet['sentiment'] = classify(processed_tweet, lexicon)
 
     return tweet
-
-
-def harvest(args, lexicon):
-    """
-    Havest tweets and store them to database
-    """
-    
-    # Variables that contains the user credentials to access Twitter API
-    # these following information are obtained through registering an app
-    # on apps.twitter.com
-    # More tutorial can be found on the following link:
-    # http://socialmedia-class.org/twittertutorial.html
- 
-    # Roger's token
-    ACCESS_TOKEN = '2172130051-DFJB7TToHvJSMU6iYRs62zTxXHbZTNX9Y4Y5wx3'
-    ACCESS_SECRET = '1KEsYxYYhd79hVWf8GQslU4GMkpmZLsj03M8vVIpcG4fb'
-    CONSUMER_KEY = 'D8JQLo7N5v9jTr8C6tqgvRl7t'
-    CONSUMER_SECRET = 'UvvzGLHrGYeFGsL7AJ0QJl4p8WOkYeJE36aPwOTOZJwHvT54g2'
-
-    # Set up couch db
-    couch = couchdb.Server("http://115.146.94.116:5984/")
-    db = couch[args.dbname]
-
-    print("CouchDB database read.")
-
-    # Twitter API authentication
-    oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
-
-    # Initiate the connection to Twitter Streaming API
-    twitter_stream = TwitterStream(auth=oauth)
-
-    # Get a sample of the public data following through Twitter
-    iterator = twitter_stream.statuses.filter(
-        # Sydney bounding box
-        locations="150.520929,-34.118347,151.343021,-33.578141",        
-        language="en"
-    )
-
-    print("Twitter API connected.")
-
-    count = 100
-    for tweet in iterator:
-        count -= 1
-        if count == 0:
-            count = 100
-            print("100 Twitter havested.")
-        # preprocessing
-        tweet = preprocess(tweet, lexicon)
-
-        # Save tweet into database
-        db.save(tweet)
-
-
-def main():
-    args = parse_args()
-    swn_lexicon = build_swn_lexicon()
-    harvest(args, swn_lexicon)
-
-
-if __name__ == '__main__':
-    main()
