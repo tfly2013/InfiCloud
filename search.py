@@ -3,6 +3,7 @@ import sentiment
 from argparse import ArgumentParser
 from twitter import Twitter, OAuth, TwitterHTTPError
 
+
 token = [
     # Fei's token
     ['724923138233012224-CtQQ4qB08Cx0ubb8wTi3Hlu5M9uoZMP',
@@ -26,34 +27,47 @@ token = [
     'AQWlN7Zwpm4rYWIV2krL81jYBKH1Nj0LFc6hfkYAALfC691hCR']
 ]
 
-dbname = ["melbourne","sydney","brisbane","perth"]
+dbname = ["melbourne", "sydney", "brisbane", "perth"]
+
 
 def parse_args():
     """ Read arguments from command line."""
 
     parser = ArgumentParser(
-    description="Twitter harvesting application using streaming api."
+        description="Twitter harvesting application using streaming api."
     )
     parser.add_argument(
-    '--index',
-    type=int,
-    default=0,
-    help='Index of city to search'
+        '--index',
+        type=int,
+        default=0,
+        help='Index of city to search'
     )
     return parser.parse_args()
+
 
 def harvest(args, lexicon):
     """
     Havest tweets and store them to database
     """
     index = args.index
+
     # Set up couch db
-    couch = couchdb.Server("http://115.146.94.116:5984/")        
+    couch = couchdb.Server("http://115.146.94.116:5984/")
     inputDB = couch[dbname[index]]
-    outputDB = [couch["smelbourne"], couch["ssydney"], couch["sbrisbane"], couch["sperth"]]
+    outputDB = [
+        couch["smelbourne"],
+        couch["ssydney"],
+        couch["sbrisbane"],
+        couch["sperth"]
+    ]
 
     # Twitter API authentication
-    oauth = OAuth(token[index][0], token[index][1], token[index][2], token[index][3])
+    oauth = OAuth(
+        token[index][0],
+        token[index][1],
+        token[index][2],
+        token[index][3]
+    )
 
     t = Twitter(auth=oauth, retry=True)
 
@@ -83,6 +97,7 @@ def harvest(args, lexicon):
                             outputDB[3].save(tweet)
         else:
             ids.add(userID)
+
 
 def main():
     args = parse_args()
