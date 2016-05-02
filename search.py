@@ -102,8 +102,8 @@ def harvest(args, lexicon):
                                 outputDB[3].save(tweet)
                 except TwitterHTTPError as err:
                     if err.e.code == 401:
-                        print("Not authorized to access user timeline, \
-                        with user id ", userID)
+                        print "Not authorized to access user timeline, \
+                        with user id ", userID
                     else:
                         raise
         else:
