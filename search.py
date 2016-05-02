@@ -101,12 +101,11 @@ def harvest(args, lexicon):
                                 tweet = sentiment.preprocess(tweet, lexicon)
                                 outputDB[3].save(tweet)
                 except TwitterHTTPError as err:
-                    if err.e.code == 401:                        
+                    if err.e.code == 401:
                         print("Not authorized to access user timeline, \
                         with user id ", userID)
                     else:
                         raise
-
         else:
             ids.add(userID)
 
