@@ -21,19 +21,19 @@ token = [
     'KYCiQNaYLBOlPRm0YIrALqgKG',
     'FXJKLs7Ft7DvcF0OAIbtScy5n5bn19tnyQpYswDkvvZkt1SUSm'],
     # Roger's token
-    ['2172130051-DFJB7TToHvJSMU6iYRs62zTxXHbZTNX9Y4Y5wx3'
-    '1KEsYxYYhd79hVWf8GQslU4GMkpmZLsj03M8vVIpcG4fb'
-    'D8JQLo7N5v9jTr8C6tqgvRl7t'
+    ['2172130051-DFJB7TToHvJSMU6iYRs62zTxXHbZTNX9Y4Y5wx3',
+    '1KEsYxYYhd79hVWf8GQslU4GMkpmZLsj03M8vVIpcG4fb',
+    'D8JQLo7N5v9jTr8C6tqgvRl7t',
     'UvvzGLHrGYeFGsL7AJ0QJl4p8WOkYeJE36aPwOTOZJwHvT54g2'],
     # Kimple's token
-    ['1879356786-obaH7zmTg2ws0Pi6mY6JbFMErMjqKxzbBGuH9ZY'
-    'pI6Wnj9CJDIscF5cVVoVe8tWJ396jITVHNOai4deWTW5l'
-    'ZsIYOPOghaoCIfj4BG76S5fGw'
+    ['1879356786-obaH7zmTg2ws0Pi6mY6JbFMErMjqKxzbBGuH9ZY',
+    'pI6Wnj9CJDIscF5cVVoVe8tWJ396jITVHNOai4deWTW5l',
+    'ZsIYOPOghaoCIfj4BG76S5fGw',
     'lcffivvg1gSiMkvN0dmHXuce3fcBoWeyr8qmSmokxm3aSIF3dq'],
     # Bofan's Token
-    ['724926978873298946-GzUWebFMysrG5c9B0QLCKwUIS334Ff2'
-    'TkQgu1VyUb9OsfYn8XJIEW3DSn9ROEqdjRdn39gCrUF39'
-    'FiwgzSsEsYA9p5KjCnzr82Lhw'
+    ['724926978873298946-GzUWebFMysrG5c9B0QLCKwUIS334Ff2',
+    'TkQgu1VyUb9OsfYn8XJIEW3DSn9ROEqdjRdn39gCrUF39',
+    'FiwgzSsEsYA9p5KjCnzr82Lhw',
     'AQWlN7Zwpm4rYWIV2krL81jYBKH1Nj0LFc6hfkYAALfC691hCR']
 ]
 
