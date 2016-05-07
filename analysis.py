@@ -1,4 +1,5 @@
 import couchdb, string
+from collections import Counter
 from argparse import ArgumentParser
 
 def parse_args():
@@ -21,22 +22,14 @@ def analysis(args):
     couch = couchdb.Server("http://115.146.94.116:5984/")
     db = couch[args.dbname]
     
-    frequent_word_dict = {}
+    frequent_word_dict = Counter()
+    translator = str.maketrans({key: None for key in string.punctuation})
     for doc_id in db:
         doc = db[doc_id]
-        for word in doc["text"].translate(string.maketrans("",""), string.punctuation).split():
-            if word not in frequent_word_dict:
-                frequent_word_dict[word] = 1
-            else:
-                frequent_word_dict[word] = frequent_word_dict[word] + 1
-    
-    items = [(v, k) for k, v in frequent_word_dict.items()]
-    items.sort()
-    items.reverse()             # so largest is first
-    items = [(k, v) for v, k in items]
-    
-    for i in range(10):
-        print (items[i])
+        for word in doc["text"].translate(translator).split():
+            frequent_word_dict[word.lower()] += 1
+
+    frequent_word_dict.most_common(10)
 #    retrieve_mapfn = """function(doc)
 #                        {
 #                          if (doc.palce != null) {
