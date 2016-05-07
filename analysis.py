@@ -29,7 +29,7 @@ def analysis(args):
         for word in doc["text"].translate(translator).split():
             frequent_word_dict[word.lower()] += 1
 
-    frequent_word_dict.most_common(10)
+    Counter(frequent_word_dict).most_common(10)
 #    retrieve_mapfn = """function(doc)
 #                        {
 #                          if (doc.palce != null) {
