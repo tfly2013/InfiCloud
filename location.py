@@ -42,10 +42,10 @@ def find_postcodes(longitude, latitude):
         temp = math.sqrt(((float(p[4]) - longitude) ** 2) + \
         ((float(p[3]) - latitude) ** 2)) 
         
-        if round(temp, 3) < round(distance, 3):
+        if round(temp, 3) < (round(distance, 3) - 1.0):
             postcode_results = [p[0]]
             distance = temp
-        elif round(temp, 3) == round(distance, 3):
+        elif not (round(temp, 3) > round(distance, 3)):
             postcode_results.append(p[0])
             distance = temp
             
@@ -60,6 +60,8 @@ def find_sla(longitude, latitude):
     postcode_results = find_postcodes(longitude, latitude)
     result = -1
     
+    # print postcode_results
+    
     for p in postcode_results:
         for s in sla:
             if s[0] == p[1:-1]:
@@ -68,7 +70,7 @@ def find_sla(longitude, latitude):
     return result
 
 # def main():
-#     print find_sla(144.9633, -37.8141)
+#     print find_sla(151.207, -33.8675)
     
 # if __name__ == '__main__':
 #     main()
