@@ -29,10 +29,10 @@ def parse_args():
 
 def search(args):
     keywords = args.keywords
-    topic = "topic" + args.topic
+    topic = "topic" + str(args.topic)
 
     couch = couchdb.Server("http://115.146.94.116:5984/")
-    db = couch["perth"]
+    db = couch[args.db]
 
     re = ""
     for word in keywords:
