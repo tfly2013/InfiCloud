@@ -60,8 +60,6 @@ def find_sla(longitude, latitude):
     postcode_results = find_postcodes(longitude, latitude)
     result = -1
     
-    print postcode_results
-    
     for p in postcode_results:
         for s in sla:
             if s[0] == p[1:-1]:
@@ -69,8 +67,8 @@ def find_sla(longitude, latitude):
                 
     return result
 
-def main():
-    print find_sla(144.9633, -37.8141)
+# def main():
+#     print find_sla(144.9633, -37.8141)
     
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
