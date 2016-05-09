@@ -1,4 +1,6 @@
 import couchdb, string
+import csv
+import operator
 from collections import Counter
 from argparse import ArgumentParser
 from location import *
@@ -14,6 +16,12 @@ def parse_args():
         type=str,
         help='Name of CouchDB database to insert data into.'
     )
+    parser.add_argument(
+        '--aurin',
+        type=str,
+        default="perth",
+        help='Database name for search.' 
+    )    
     return parser.parse_args()
 
 
@@ -46,11 +54,29 @@ def analysis(args):
     
     results = db.query(map_fun)
     sla = Counter()
-
+    keyword = "bored"
     for row in results:
-        if ("weather" in row.value.lower()):
+        if keyword in row.value.lower():
             sla[find_sla(row.key["coordinates"][0], row.key["coordinates"][1])] +=1
-    print (sla)
+    print ("keyword = " + keyword)
+    #print (sla)
+    
+    correlation_map = {}
+    with open(args.aurin) as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            for key in sla.elements():
+                if row[0] == key:
+                    correlation_map[key] = (sla[key], row[1])
+                    
+#    correlation_map = [(v, k) for k, v in correlation_map.items()]
+#    correlation_map.sort()
+#    correlation_map.reverse()             # so largest is first
+#    correlation_map = [(k, v) for v, k in items]
+                    
+    correlation_map = sorted(correlation_map.items(), key=(operator.itemgetter(1)), reverse=True)               
+    print (correlation_map)        
+            
     
         
 
