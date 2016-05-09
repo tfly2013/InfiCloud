@@ -31,16 +31,46 @@ def find_postcode(longitude, latitude):
     return postcode[1:-1]
     
 """
+Given a longitude and latitude, returns a list of postcodes as a string.
+"""
+def find_postcodes(longitude, latitude):
+    
+    distance = 10000
+    postcode_results = []
+    
+    for p in postcodes:
+        temp = math.sqrt(((float(p[4]) - longitude) ** 2) + \
+        ((float(p[3]) - latitude) ** 2)) 
+        
+        if round(temp, 3) < round(distance, 3):
+            postcode_results = [p[0]]
+            distance = temp
+        elif round(temp, 3) == round(distance, 3):
+            postcode_results.append(p[0])
+            distance = temp
+            
+    return postcode_results
+    
+"""
 Given a longitude and latitude, returns the statisical local area (SLA) 
 as a string.
 """
 def find_sla(longitude, latitude):
     
-    postcode = find_postcode(longitude, latitude)
+    postcode_results = find_postcodes(longitude, latitude)
     result = -1
     
-    for s in sla:
-        if s[0] == postcode:
-            result = s[1]
-            
+    print postcode_results
+    
+    for p in postcode_results:
+        for s in sla:
+            if s[0] == p[1:-1]:
+                result = s[1]
+                
     return result
+
+def main():
+    print find_sla(144.9633, -37.8141)
+    
+if __name__ == '__main__':
+    main()
