@@ -1,6 +1,7 @@
 import couchdb, string
 from collections import Counter
 from argparse import ArgumentParser
+from location import *
 
 def parse_args():
     """ Read arguments from command line."""
@@ -22,14 +23,48 @@ def analysis(args):
     couch = couchdb.Server("http://115.146.94.116:5984/")
     db = couch[args.dbname]
     
-    frequent_word_dict = Counter()
-    translator = str.maketrans({key: None for key in string.punctuation})
-    for doc_id in db:
-        doc = db[doc_id]
-        for word in doc["text"].translate(translator).split():
-            frequent_word_dict[word.lower()] += 1
 
-    Counter(frequent_word_dict).most_common(10)
+    
+#    topic = "test"
+#    reducefun = "_count"
+#    mapreduce = {'map': map_fun,'reduce': reducefun}
+#
+#    ddoc = db.get("_design/test")
+#    if ddoc:
+#        ddoc["views"][topic] = mapreduce
+#        db.save(ddoc)
+#    else:
+#        design = {'views': {topic: mapreduce}}
+#        db["_design/test"] = design
+#
+#    result = db.view('test/'+ topic, group=True)
+    map_fun = '''function(doc) {
+       if (doc.coordinates != null) {
+           emit(doc.coordinates, doc.text);
+       }
+    }'''
+    
+    results = db.query(map_fun)
+    sla = Counter()
+
+    for row in results:
+        if ("weather" in row.value.lower()):
+            sla[find_sla(row.key["coordinates"][0], row.key["coordinates"][1])] +=1
+    print (sla)
+    
+        
+
+#    for row in result:
+#        print(row.value)
+#        print(row.key)
+#    frequent_word_dict = Counter()
+#    translator = str.maketrans({key: None for key in string.punctuation})
+#    for doc_id in db:
+#        doc = db[doc_id]
+#        for word in doc["text"].translate(translator).split():
+#            frequent_word_dict[word.lower()] += 1
+#
+#    Counter(frequent_word_dict).most_common(10)
 #    retrieve_mapfn = """function(doc)
 #                        {
 #                          if (doc.palce != null) {
@@ -51,3 +86,6 @@ def analysis(args):
 def main():
     args = parse_args()
     analysis(args)
+    
+if __name__ == '__main__':
+    main()
