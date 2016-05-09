@@ -27,6 +27,11 @@ def parse_args():
         nargs='+',
         help='Keywords for search.'        
     )
+    parser.add_argument(
+        '--aurin',
+        type=str,
+        help='Aurin data.'        
+    )
     return parser.parse_args()
 
 def sla_search(args):
@@ -63,15 +68,15 @@ def sla_search(args):
         
     for row in result:        
         sla[find_sla(row.key["coordinates"][0], row.key["coordinates"][1])] +=1
-    print sla
+    print (sla)
     
-#    correlation_map = {}
-#    with open(args.aurin) as csvfile:
-#        reader = csv.reader(csvfile)
-#        for row in reader:
-#            for key in sla.elements():
-#                if row[0] == key:
-#                    correlation_map[key] = (sla[key], row[1])
+    correlation_map = {}
+    with open(args.aurin) as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            for key in sla.elements():
+                if row[0] == key:
+                    correlation_map[key] = (sla[key], row[1])
 #                    
 #    correlation_map = [(v, k) for k, v in correlation_map.items()]
 #    correlation_map.sort()
@@ -81,6 +86,22 @@ def sla_search(args):
     correlation_map = sorted(correlation_map.items(), key=(operator.itemgetter(1)), reverse=True)               
     print (correlation_map) 
     
+    
+    with open('correlation.csv', 'w') as csvfile:	
+        csvfile.write('SLA,Tweet Counts,Aurin Data\n')	
+        for data in correlation_map:		
+            csvfile.write('{0},{1},{2}\n'.format(data[0], data[1][0], data[1][1]))
+            
+#    with open('correlation.csv', 'w', newline='') as csvfile:
+#        writer = csv.writer(csvfile)
+#        
+##        writer = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+#        writer.writerow(['SLA'],['Tweet Count'],['Aurin Data'])
+#        writer.writerows(correlation_map)
+##        for (k,v) in correlation_map:
+##            writer.writerow(k + str(v[0]) + str(v[1]))
+
+        
 def main():
     args = parse_args()
     sla_search(args)
