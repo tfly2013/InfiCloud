@@ -48,7 +48,7 @@ def analysis(args):
     sla = Counter()
 
     for row in results:
-        if ("afl" in row.value.lower()):
+        if ("weather" in row.value.lower()):
             sla[find_sla(row.key["coordinates"][0], row.key["coordinates"][1])] +=1
     print (sla)
     
