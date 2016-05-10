@@ -25,5 +25,8 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-shell": "^0.5.2"
+  },
+  "dependencies": {
+    "yargs": "^4.7.0"
   }
 }
