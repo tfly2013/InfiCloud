@@ -1,0 +1,22 @@
+---
+- hosts: couchdb
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+  - name: update apt repository
+    apt: update_cache=yes
+  - name: install software-properties-common
+    apt: name=software-properties-common state=installed update_cache=yes
+  - name: add couchdb repository
+    apt_repository: repo='ppa:couchdb/stable' update_cache=yes
+  - name: install couchdb
+    apt: pkg={{ item }} state=installed update_cache=yes
+    with_items:
+      - couchdb
+      - couchdb-bin
+      - couchdb-common
+  - name: ensure couchdb is binded to all nic
+    lineinfile: dest=/etc/couchdb/local.ini regexp='^;bind_address' line="bind_address = 0.0.0.0"
+  - name: start couchdb
+    service: name=couchdb state=restarted

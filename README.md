@@ -42,7 +42,18 @@ sudo pip install ntlk twitter couchdb
 # Ansible
 ## Installation
 ```bash
+# Mac
 sudo pip install ansible
+# Ubuntu
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible
+```
+
+## Install shade module
+```bash
+sudo pip install shade
 ```
 
 # Docker
@@ -51,5 +62,5 @@ sudo pip install ansible
 # Ubuntu
 curl -fsSL https://get.docker.com/ | sh
 sudo apt-get install docker-engine
-# Mac download the dmg file
+# Mac download the dmg file and install
 ```

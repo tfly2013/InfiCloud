@@ -1,0 +1,16 @@
+---
+- hosts: twitter-miner
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+  - name: update apt repository
+    apt: update_cache=yes
+  - name: install software-properties-common
+    apt: name=software-properties-common state=installed update_cache=yes
+  - name: install pip
+    apt: pkg={{ item }} state=installed update_cache=yes
+    with_items:
+      - build-essentials
+      - python-pip
+      - python-dev
