@@ -18,5 +18,5 @@
       - couchdb-common
   - name: ensure couchdb is binded to all nic
     lineinfile: dest=/etc/couchdb/local.ini regexp='^;bind_address' line="bind_address = 0.0.0.0"
-  - name: start couchdb
+  - name: restart couchdb
     service: name=couchdb state=restarted

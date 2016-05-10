@@ -51,8 +51,11 @@ sudo apt-get update
 sudo apt-get install ansible
 ```
 
-## Install shade module
+## Install additional module
 ```bash
+# docker-py
+sudo pip install docker-py
+# shade
 sudo pip install shade
 ```
 
