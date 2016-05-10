@@ -24,7 +24,12 @@ token = [
     ['724926978873298946-GzUWebFMysrG5c9B0QLCKwUIS334Ff2',
      'TkQgu1VyUb9OsfYn8XJIEW3DSn9ROEqdjRdn39gCrUF39',
      'FiwgzSsEsYA9p5KjCnzr82Lhw',
-     'AQWlN7Zwpm4rYWIV2krL81jYBKH1Nj0LFc6hfkYAALfC691hCR']
+     'AQWlN7Zwpm4rYWIV2krL81jYBKH1Nj0LFc6hfkYAALfC691hCR'],
+    # Zeyu (David)'s Token'
+    ['1644801547-Kv3f5yGWqa6x4JhP4StNX7M1MCk7iFdo47hHijm',
+     'EsscWBNzIALLk5NAAT7U44OkM8kOE93VS3hms3OFqzXOW',
+     'F3T6td0kAxMwKJrfCPIPJYB6B',
+     '88zrERXmEoqFQvDIxHxKDqpMyBtOagA15O2OgiKSeNsnnD3aY5']
 ]
 
 dbname = ["melbourne", "sydney", "brisbane", "perth"]
