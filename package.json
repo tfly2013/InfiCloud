@@ -23,6 +23,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/ccc20163/assignment2#readme",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "gulp-shell": "^0.5.2"
   }
 }

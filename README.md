@@ -38,3 +38,9 @@ pip install nltk twitter couchdb
 # Mac
 sudo pip install ntlk twitter couchdb
 ```
+
+# Ansible
+## Installation
+```bash
+sudo pip install ansible
+```
