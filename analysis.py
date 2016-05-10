@@ -83,10 +83,10 @@ def analysis(args):
         populations_dict[p[0]] = p[2]
     
     with open('correlation.csv', 'w') as csvfile:   
-        csvfile.write('SLA,Tweets per 1000 Population,Aurin Data\n')    
+        csvfile.write('SLA,Tweet Count,Tweets per 1000 Population,Aurin Data\n')    
         for data in correlation_map:        
-            csvfile.write('{0},{1},{2}\n'.format(data[0], data[1][0] * \
-            1000 / float(populations_dict[data[0]]), data[1][1]))
+            csvfile.write('{0},{1},{2},{3}\n'.format(data[0], data[1][0], \
+            data[1][0] * 1000 / float(populations_dict[data[0]]), data[1][1]))
     
 def main():
     args = parse_args()
