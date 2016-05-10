@@ -1,4 +1,4 @@
-import couchdb, string
+import couchdb, string, operator
 from collections import Counter
 from argparse import ArgumentParser
 from location import *
