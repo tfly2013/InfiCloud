@@ -1,0 +1,28 @@
+{
+  "name": "comp90024_twitter_miner",
+  "version": "1.0.0",
+  "description": "Twitter Mining application for COMP90024",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://Shuliyey@bitbucket.org/ccc20163/assignment2.git"
+  },
+  "keywords": [
+    "Twitter",
+    "Python",
+    "Nltk",
+    "Couchdb"
+  ],
+  "author": "Zeyu Ye, Kimple Ke, Roger Li, Fei Tang, Bofan Jing",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/ccc20163/assignment2#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
