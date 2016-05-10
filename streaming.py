@@ -5,7 +5,7 @@ Authors: Kimple Ke, Roger Li, Fei Tang, Bofan Jin, David Ye
 """
 
 import couchdb
-import sentiment
+from preprocess import *
 from argparse import ArgumentParser
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 
@@ -92,7 +92,7 @@ def harvest(args, lexicon):
 
     for tweet in iterator:
         # preprocessing
-        tweet = sentiment.preprocess(tweet, lexicon)
+        tweet = preprocess(tweet, lexicon)
 
         # Save tweet into database
         db.save(tweet)
@@ -100,7 +100,7 @@ def harvest(args, lexicon):
 
 def main():
     args = parse_args()
-    swn_lexicon = sentiment.build_swn_lexicon()
+    swn_lexicon = build_swn_lexicon()
     harvest(args, swn_lexicon)
 
 

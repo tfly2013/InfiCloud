@@ -1,5 +1,5 @@
 import couchdb
-import sentiment
+from preprocess import *
 from argparse import ArgumentParser
 from twitter import Twitter, OAuth, TwitterHTTPError
 
@@ -89,16 +89,16 @@ def harvest(args, lexicon):
                     for tweet in result:
                         if tweet["place"] != None:
                             if tweet["place"]["name"] == "Melbourne":
-                                tweet = sentiment.preprocess(tweet, lexicon)
+                                tweet = preprocess(tweet, lexicon)
                                 outputDB[0].save(tweet)
                             elif tweet["place"]["name"] == "Sydney":
-                                tweet = sentiment.preprocess(tweet, lexicon)
+                                tweet = preprocess(tweet, lexicon)
                                 outputDB[1].save(tweet)
                             elif tweet["place"]["name"] == "Brisbane":
-                                tweet = sentiment.preprocess(tweet, lexicon)
+                                tweet = preprocess(tweet, lexicon)
                                 outputDB[2].save(tweet)
                             elif tweet["place"]["name"] == "Perth (WA)":
-                                tweet = sentiment.preprocess(tweet, lexicon)
+                                tweet = preprocess(tweet, lexicon)
                                 outputDB[3].save(tweet)
                 except TwitterHTTPError as err:
                     if err.e.code == 401:
@@ -112,7 +112,7 @@ def harvest(args, lexicon):
 
 def main():
     args = parse_args()
-    swn_lexicon = sentiment.build_swn_lexicon()
+    swn_lexicon = build_swn_lexicon()
     harvest(args, swn_lexicon)
 
 

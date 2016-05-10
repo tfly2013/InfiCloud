@@ -1,5 +1,6 @@
 import nltk
 import re
+from location import *
 from nltk.corpus import sentiwordnet as swn
 from nltk.corpus import wordnet as wn
 from nltk.corpus import opinion_lexicon
@@ -196,5 +197,11 @@ def preprocess(tweet, lexicon):
         processed_tweet.append(sent_list)
 
     tweet['sentiment'] = classify(processed_tweet, lexicon)
+
+    # add sla
+    if tweet['coordinates'] != None:
+        lng = tweet["coordinates"]["coordinates"][0]
+        lat = tweet["coordinates"]["coordinates"][1]
+        tweet["sla"] = find_sla(lng, lat)
 
     return tweet
