@@ -1,4 +1,4 @@
-import couchdb, string, operator
+import couchdb, csv, string, operator
 from collections import Counter
 from argparse import ArgumentParser
 from location import *
@@ -77,17 +77,22 @@ def sla_search(args):
                 if row[0] == key:
                     correlation_map[key] = (sla[key], row[1])
                     
-    correlation_map = sorted(correlation_map.items(), key=(operator.itemgetter(1)), reverse=True)               
+    correlation_map = sorted(correlation_map.items(), \
+    key=(operator.itemgetter(1)), reverse=True)               
     print (correlation_map) 
     
+    populations = list(csv.reader(open("./data/sla_population.csv")))
+    populations_dict = {}
+    
+    for p in populations:
+        populations_dict[p[0]] = p[2]
     
     with open('correlation.csv', 'w') as csvfile:	
-        csvfile.write('SLA,Tweet Counts,Aurin Data\n')	
+        csvfile.write('SLA,Tweets per 1000 Population,Aurin Data\n')	
         for data in correlation_map:		
-            csvfile.write('{0},{1},{2}\n'.format(data[0], data[1][0], data[1][1]))
+            csvfile.write('{0},{1},{2}\n'.format(data[0], data[1][0] * \
+            1000 / float(populations_dict[data[0]]), data[1][1]))
 
-
-        
 def main():
     args = parse_args()
     sla_search(args)
