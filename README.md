@@ -44,3 +44,12 @@ sudo pip install ntlk twitter couchdb
 ```bash
 sudo pip install ansible
 ```
+
+# Docker
+## Install
+```bash
+# Ubuntu
+curl -fsSL https://get.docker.com/ | sh
+sudo apt-get install docker-engine
+# Mac download the dmg file
+```

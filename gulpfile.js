@@ -18,7 +18,7 @@ gulp.task('dist', ['build'], function () {
 
 gulp.task('default', ['build', 'dist']);
 
-gulp.task('package', ['default'], shell.task([
+gulp.task('docker-publish', ['default'], shell.task([
   'docker build -t shuliyey/twitter_miner:' + argv.tag + ' .',
   'docker push shuliyey/twitter_miner:' + argv.tag
 ]));
