@@ -5,7 +5,7 @@ RUN apt-get install -y software-properties-common python-pip python-dev build-es
 RUN pip install nltk twitter couchdb
 RUN mkdir -p /root/comp90024_twitter_miner
 
-ADD dist/* /root/comp90024_twitter_miner/
+ADD dist /root/comp90024_twitter_miner/
 ADD Dockerfile /root/comp90024_twitter_miner/
 
 WORKDIR /root/comp90024_twitter_miner
