@@ -99,10 +99,13 @@ def analysis(args):
         populations_dict[p[0]] = p[2]
     
     # divide number of tweets by the popluation in SLA, and output as csv file
+    result_db = couch["scenario_" +  str(args.topic)]
     with open('correlation.csv', 'w') as csvfile:   
         csvfile.write('SLA,Tweet Count,Tweets per 1000 Population,Aurin Data,Aurin Data per 100 population\n')    
-        for data in correlation_map:
-            if data[1][1] != 'null':    
+        for data in correlation_map:         
+            if data[1][1] != 'null':                
+                result_data = ({data[0]:(data[1][0],data[1][1])})
+                result_db.save(result_data)
                 csvfile.write('{0},{1},{2},{3},{4}\n'.format(data[0], data[1][0], \
                 data[1][0] * 1000 / float(populations_dict.get(data[0], 100000000)), \
                 data[1][1], float(data[1][1]) * 100 / float(populations_dict.get(data[0], 100000000))))
