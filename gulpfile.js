@@ -1,13 +1,17 @@
 var gulp = require('gulp');
 var shell = require('gulp-shell');
+var clean = require('gulp-clean');
 var argv = require('yargs')
   .default('tag', "v1.0")
   .alias('t', 'tag')
   .argv;
 
-console.log(argv.tag);
+gulp.task('clean-dist', function () {
+  gulp.src('dist')
+    .pipe(clean());
+});
 
-gulp.task('build', shell.task([
+gulp.task('build', ['clean-dist'], shell.task([
   'python -m compileall *.py'
 ]));
 
