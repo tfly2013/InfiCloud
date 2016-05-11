@@ -7,8 +7,8 @@ Authors: Kimple Ke, Roger Li, Fei Tang, Bofan Jin, David Ye
 import csv
 import math
 
-postcodes = list(csv.reader(open("postcodes.csv")))
-sla = list(csv.reader(open("sla.csv"), delimiter='\t'))
+postcodes = list(csv.reader(open("./data/postcodes.csv")))
+sla = list(csv.reader(open("./data/sla.csv"), delimiter='\t'))
 
 """
 Given a longitude and latitude, returns the postcode as a string.
