@@ -103,10 +103,13 @@ def search_data(args):
                     new_sla_dict[sla]["happiness"] = round(happiness, 5)
 
     file_path = output_path
+    result_db = couch["scenario_" +  str(args.topic)]
     with open(file_path, 'w') as csvfile:
         for sla in new_sla_dict.keys():
             income = new_sla_dict[sla]["income"]
             happiness = new_sla_dict[sla]["happiness"]
+            result_data ={"SLA" : sla, "Income": income, "Happiness" : happiness}
+            result_db.save(result_data) 
             csvfile.write('{0},{1},{2}\n'.format(sla, income, happiness))
 
 
