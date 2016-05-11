@@ -3,17 +3,18 @@ Team: Cluster and Cloud Computing Team 3
 Contents: Assigment 2
 Authors: Kimple Ke, Roger Li, Fei Tang, Bofan Jin, David Ye
 """
-
+# SLA Module
 import csv
 import math
 
 postcodes = list(csv.reader(open("./data/postcodes.csv")))
 sla = list(csv.reader(open("./data/sla.csv"), delimiter='\t'))
 
-"""
-Given a longitude and latitude, returns the postcode as a string.
-"""
+
 def find_postcode(longitude, latitude):
+    """
+    Given a longitude and latitude, returns the postcode as a string.
+    """
     
     distance = -1
     postcode = -1
@@ -30,10 +31,11 @@ def find_postcode(longitude, latitude):
                 distance = temp
     return postcode[1:-1]
     
-"""
-Given a longitude and latitude, returns a list of postcodes as a string.
-"""
+
 def find_postcodes(longitude, latitude):
+    """
+    Given a longitude and latitude, returns a list of postcodes as a string.
+    """
     
     distance = 10000
     postcode_results = []
@@ -51,11 +53,12 @@ def find_postcodes(longitude, latitude):
             
     return postcode_results
     
-"""
-Given a longitude and latitude, returns the statisical local area (SLA) 
-as a string.
-"""
+
 def find_sla(longitude, latitude):
+    """
+    Given a longitude and latitude, returns the statisical local area (SLA) 
+    as a string.
+    """
     
     postcode_results = find_postcodes(longitude, latitude)
     result = -1
@@ -68,9 +71,3 @@ def find_sla(longitude, latitude):
                 result = s[1]
                 
     return result
-
-# def main():
-#     print find_sla(151.207, -33.8675)
-    
-# if __name__ == '__main__':
-#     main()
