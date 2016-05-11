@@ -1,11 +1,16 @@
 ---
-- hosts: localhost
+- hosts: openstack
   tasks:
   - name: launch instance
     os_server: 
       state: present
       auth: 
         auth_url: https://keystone.rc.nectar.org.au:5000/v2.0/
-        username: {{ user }}
-        password: {{ pass }}
+        auth_type: password
+        username: zeyuy
+        password: shuliye1
         project_name: TouchFrame
+      name: "CouchDB Cloud Cluster Computing"
+      image: 73c6f8d8-f885-4253-8bee-e45da068fb65
+      key_name: cloud_cluster_computing
+      flavor: 885227de-b7ee-42af-a209-2f1ff59bc330
