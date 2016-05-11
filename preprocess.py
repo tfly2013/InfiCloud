@@ -1,3 +1,10 @@
+"""
+Team: Cluster and Cloud Computing Team 3
+Contents: Assigment 2
+Authors: Kimple Ke, Roger Li, Fei Tang, Bofan Jin, David Ye
+"""
+
+# Preprocess Module
 import nltk
 import re
 from location import *
@@ -198,7 +205,7 @@ def preprocess(tweet, lexicon):
 
     tweet['sentiment'] = classify(processed_tweet, lexicon)
 
-    # add sla
+    # add sla to tweets
     if tweet['coordinates'] != None:
         lng = tweet["coordinates"]["coordinates"][0]
         lat = tweet["coordinates"]["coordinates"][1]

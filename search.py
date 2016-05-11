@@ -1,9 +1,15 @@
+"""
+Team: Cluster and Cloud Computing Team 3
+Contents: Assigment 2
+Authors: Kimple Ke, Roger Li, Fei Tang, Bofan Jin, David Ye
+"""
+
 import couchdb
 from preprocess import *
 from argparse import ArgumentParser
 from twitter import Twitter, OAuth, TwitterHTTPError
 
-
+# Tokens that contains the user credentials to access Twitter API
 token = [
     # Fei's token
     ['724923138233012224-CtQQ4qB08Cx0ubb8wTi3Hlu5M9uoZMP',
@@ -32,8 +38,8 @@ token = [
      '88zrERXmEoqFQvDIxHxKDqpMyBtOagA15O2OgiKSeNsnnD3aY5']
 ]
 
+# database names of streaming database
 dbname = ["melbourne", "sydney", "brisbane", "perth"]
-
 
 def parse_args():
     """ Read arguments from command line."""
@@ -45,14 +51,14 @@ def parse_args():
         '--index',
         type=int,
         default=0,
-        help='Index of city to search'
+        help='Index of virtual machine'
     )
     return parser.parse_args()
 
 
 def harvest(args, lexicon):
     """
-    Havest tweets and store them to database
+    Havest tweets using search API and store them to database
     """
     index = args.index
 
@@ -76,24 +82,33 @@ def harvest(args, lexicon):
 
     t = Twitter(auth=oauth, retry=True)
 
+    # keep track the user ids that already been searched
     ids = set()
     for doc_id in inputDB:
         doc = inputDB[doc_id]
+        # get the user id from tweet
         userID = doc["user"]["id"]
+        # make tweets that has been processed as searched
         if "searched" not in doc:
             doc["searched"] = True
             inputDB.save(doc)
+            # check if user id has been searched
             if userID not in ids:
                 ids.add(userID)
+                # make user time line request
                 try:
                     result = t.statuses.user_timeline(
                         user_id=userID,
                         count=200
                     )
 
+                    # handling results
                     for tweet in result:
+                        # filter out tweets that has no location data
                         if tweet["place"] != None:
+                            # store tweets into different db by location
                             if tweet["place"]["name"] == "Melbourne":
+                                # preprocess (sentiment + SLA)
                                 tweet = preprocess(tweet, lexicon)
                                 outputDB[0].save(tweet)
                             elif tweet["place"]["name"] == "Sydney":
@@ -105,6 +120,7 @@ def harvest(args, lexicon):
                             elif tweet["place"]["name"] == "Perth (WA)":
                                 tweet = preprocess(tweet, lexicon)
                                 outputDB[3].save(tweet)
+                # handing unautherized error
                 except TwitterHTTPError as err:
                     if err.e.code == 401:
                         print "Not authorized to access user timeline, \
@@ -117,6 +133,7 @@ def harvest(args, lexicon):
 
 def main():
     args = parse_args()
+    # build up lexicon
     swn_lexicon = build_swn_lexicon()
     harvest(args, swn_lexicon)
 

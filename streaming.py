@@ -11,10 +11,6 @@ from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 
 
 # Tokens that contains the user credentials to access Twitter API
-# these following information are obtained through registering an app
-# on apps.twitter.com
-# More tutorial can be found on the following link:
-# http://socialmedia-class.org/twittertutorial.html
 token = [
     # Fei's token
     ['724923138233012224-CtQQ4qB08Cx0ubb8wTi3Hlu5M9uoZMP',
@@ -38,10 +34,10 @@ token = [
      'AQWlN7Zwpm4rYWIV2krL81jYBKH1Nj0LFc6hfkYAALfC691hCR']
 ]
 
-
+# database names of streaming database
 dbname = ["melbourne", "sydney", "brisbane", "perth"]
 
-
+# bounding box coordinates that used as location filter
 coordinate = ["144.593742,-38.433859,145.512529,-37.511274",
               "150.520929,-34.118347,151.343021,-33.578141",
               "152.668523, -27.767441,153.31787, -26.996845",
@@ -58,14 +54,14 @@ def parse_args():
         '--index',
         type=int,
         default=0,
-        help='Index of city to search'
+        help='Index of virtual machine'
     )
     return parser.parse_args()
 
 
 def harvest(args, lexicon):
     """
-    Havest tweets and store them to database
+    Havest tweets using Streaming API and store them to database
     """
     index = args.index
 
@@ -90,6 +86,7 @@ def harvest(args, lexicon):
         language="en"
     )
 
+    # continuously retrieving tweets
     for tweet in iterator:
         # preprocessing
         tweet = preprocess(tweet, lexicon)
@@ -100,6 +97,7 @@ def harvest(args, lexicon):
 
 def main():
     args = parse_args()
+    # build up lexicon
     swn_lexicon = build_swn_lexicon()
     harvest(args, swn_lexicon)
 
