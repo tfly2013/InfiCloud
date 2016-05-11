@@ -1,0 +1,32 @@
+---
+- hosts: twitter-miner
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+  - name: update apt repository
+    apt: update_cache=yes
+  - name: install docker engine
+    apt: name=docker.io state=installed update_cache=yes
+  - name: install pip and build-essential
+    apt: pkg={{ item }} state=installed update_cache=yes
+    with_items:
+      - build-essential
+      - python-pip
+      - python-dev
+  - name: ensure docker-py is installed for Ansible Docker Module to work
+    pip: name=docker-py
+  - name: restart docker
+    service: name=docker state=restarted
+  - name: stop and remove twitter_miner docker container if exists
+    docker: 
+      name: twitter_miner
+      image: shuliyey/twitter_miner:v1.0
+      state: absent
+  - name: run twitter_miner docker container from the latest image
+    docker: 
+      name: twitter_miner
+      image: shuliyey/twitter_miner:v1.0
+      pull: always
+      env:
+        TM_INDEX: "{{ tm_index }}"

@@ -38,3 +38,63 @@ pip install nltk twitter couchdb
 # Mac
 sudo pip install ntlk twitter couchdb
 ```
+
+# Ansible
+## Installation
+```bash
+# Mac
+sudo pip install ansible
+# Ubuntu
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible
+```
+
+## Install additional module
+```bash
+# docker-py
+sudo pip install docker-py
+# shade
+sudo pip install shade
+```
+
+## Auto Deployment
+```bash
+# To deploy and update couchdb
+sudo ansible-playbook playbooks/deploy-couchdb.yaml
+# To deploy and update latest twitter mining application
+sudo ansible-playbook playbooks/deploy-twitter-miner.yaml
+```
+
+# Docker
+## Install
+```bash
+# Ubuntu
+curl -fsSL https://get.docker.com/ | sh
+sudo apt-get install docker-engine
+# Mac download the dmg file and install
+```
+
+# Gulp
+## Install
+```bash
+# Install Node.js
+## Ubuntu & Debian
+sudo apt-get install -y build-essentials
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install -y nodejs
+## Windows and mac can download and install from installers
+# Install gulp
+npm install -g gulp
+```
+## Build
+```bash
+# Make sure you are under the root directory of where the gulpfile is
+# Install node modules that's specified in the package.json
+npm install
+# Step 1 - build and packge the application to dist folder
+gulp
+# Step 2 - build docker image and push to docker hub
+gulp docker-publish
+```
