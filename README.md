@@ -79,7 +79,7 @@ sudo apt-get install docker-engine
 ## Run the twitter mining docker application
 ### Details can be found at https://hub.docker.com/r/shuliyey/twitter_miner/
 ```bash
-docker run -d -it -e TM_INDEX=<0/1/2/3>  shuliyey/twitter_miner:<tag> # In this example docker run -d -it -e TM_INDEX=0  shuliyey/twitter_miner:v1.0
+docker run -d -it -e TM_INDEX=<0/1/2/3>  shuliyey/twitter_miner:<tag> # In this example docker run -d -it -e TM_INDEX=0 shuliyey/twitter_miner:v1.0
 ```
 
 # Gulp
