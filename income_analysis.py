@@ -1,3 +1,8 @@
+"""
+Team: Cluster and Cloud Computing Team 3
+Contents: Assigment 2
+Authors: Kimple Ke, Roger Li, Fei Tang, Bofan Jin, David Ye
+"""
 import couchdb
 import csv
 from argparse import ArgumentParser
@@ -11,7 +16,7 @@ def parse_args():
     """ Read arguments from command line."""
 
     parser = ArgumentParser(
-        description="Keywords searching and counting in couchDB."
+        description="Analysis using sentiment and sla with AURIN data."
     )
     parser.add_argument(
         '--topic',
@@ -40,7 +45,7 @@ def search_data(args):
     """
     Aggregate all income and sentiment/happiness measure
     """
-
+    # handling arguments
     topic = args.topic
     dbname = args.db
     aurin_data = args.aurin
@@ -48,16 +53,19 @@ def search_data(args):
 
     topic = "topic" + str(topic)
 
+    # connect to couchDB
     couch = couchdb.Server("http://115.146.94.116:5984/")
     db = couch[dbname]
 
-    mapreduce = '''function(doc) { 
+    # output sla and sentiment
+    mapfun = '''function(doc) { 
     if (doc.coordinates != null)
         emit(doc.sla, doc.sentiment);
     }'''
 
-    option = {'map': mapreduce}
+    option = {'map': mapfun}
 
+    # create or update design document
     ddoc = db.get("_design/sla")
     if ddoc:
         ddoc["views"][topic] = option
@@ -68,6 +76,8 @@ def search_data(args):
 
     result = db.view('sla/' + topic)
 
+    # divide result in 3 different sentiments
+    # count tweets for each of them
     sla_dict = {}
     for row in result:
         sentiment = row.value
@@ -86,11 +96,12 @@ def search_data(args):
             sla_dict[sla]["neutral_count"] = 0
 
     new_sla_dict = {}
+    # correlate with AURIN data
     with open(aurin_data) as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             sla = row[0]
-            income = row[1]
+            income = row[1]            
             if sla in set(sla_dict.keys()):
                 pos_c = float(sla_dict[sla]["positive_count"])
                 neg_c = float(sla_dict[sla]["negative_count"])
@@ -104,10 +115,12 @@ def search_data(args):
 
     file_path = output_path
     result_db = couch["scenario_" +  str(args.topic)]
+    # output the result
     with open(file_path, 'w') as csvfile:
         for sla in new_sla_dict.keys():
             income = new_sla_dict[sla]["income"]
             happiness = new_sla_dict[sla]["happiness"]
+            # put result back into database
             result_data ={"SLA" : sla, "Income": income, "Happiness" : happiness}
             result_db.save(result_data) 
             csvfile.write('{0},{1},{2}\n'.format(sla, income, happiness))

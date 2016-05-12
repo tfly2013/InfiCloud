@@ -103,7 +103,8 @@ def analysis(args):
     with open('correlation.csv', 'w') as csvfile:   
         csvfile.write('SLA,Tweet Count,Tweets per 1000 Population,Aurin Data,Aurin Data per 100 population\n')    
         for data in correlation_map:         
-            if data[1][1] != 'null':                
+            if data[1][1] != 'null':
+                # put result back into database
                 result_data ={"SLA" : data[0], "Tweet Count": data[1][0], "Aurin Data" : data[1][1]}
                 result_db.save(result_data) 
                 csvfile.write('{0},{1},{2},{3},{4}\n'.format(data[0], data[1][0], \
