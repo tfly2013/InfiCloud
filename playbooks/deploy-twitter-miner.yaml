@@ -21,12 +21,12 @@
   - name: stop and remove twitter_miner docker container if exists
     docker: 
       name: twitter_miner
-      image: shuliyey/twitter_miner:v1.0
+      image: shuliyey/twitter_miner:{{ docker_tag }}
       state: absent
   - name: run twitter_miner docker container from the latest image
     docker: 
       name: twitter_miner
-      image: shuliyey/twitter_miner:v1.0
+      image: shuliyey/twitter_miner:{{ docker_tag }}
       pull: always
       env:
         TM_INDEX: "{{ tm_index }}"

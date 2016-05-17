@@ -6,10 +6,9 @@ var argv = require('yargs')
   .alias('t', 'tag')
   .argv;
 
-gulp.task('clean-dist', function () {
-  gulp.src('dist')
-    .pipe(clean());
-});
+gulp.task('clean-dist', shell.task([
+  'rm -rf dist'
+]));
 
 gulp.task('build', ['clean-dist'], shell.task([
   'python -m compileall *.py'
